@@ -103,19 +103,19 @@ export default function FeaturedProjects() {
     <section ref={containerRef} className="py-16 md:py-24 lg:py-32">
       <div className="container">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-20"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <motion.h2 className="text-4xl font-bold tracking-tighter md:text-5xl lg:text-6xl" style={{ y }}>
+          <motion.h2 className="text-4xl font-bold tracking-tighter md:text-5xl lg:text-6xl mb-8" style={{ y }}>
             <span className="bg-gradient-to-r from-foreground via-purple-500 to-pink-500 bg-clip-text text-transparent">
               Featured Projects
             </span>
           </motion.h2>
           <motion.p
-            className="mx-auto mt-6 max-w-[700px] text-lg text-muted-foreground md:text-xl"
+            className="mx-auto max-w-[700px] text-lg text-muted-foreground md:text-xl"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
