@@ -6,21 +6,42 @@ import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { Canvas, useFrame } from "@react-three/fiber"
-import { Float, useGLTF, Environment, OrbitControls } from "@react-three/drei"
+import { Float, Environment, OrbitControls } from "@react-three/drei"
 
-function ProjectModel({ modelPath }: { modelPath: string }) {
-  const { scene } = useGLTF(modelPath)
+function ProjectModel({ geometry, color }: { geometry: string; color: string }) {
   const modelRef = useRef()
 
   useFrame((state) => {
     if (modelRef.current) {
       modelRef.current.rotation.y = Math.sin(state.clock.elapsedTime) * 0.3
+      modelRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.1
     }
   })
 
+  const getGeometry = () => {
+    switch (geometry) {
+      case 'dodecahedron':
+        return <dodecahedronGeometry args={[1, 0]} />
+      case 'icosahedron':
+        return <icosahedronGeometry args={[1, 0]} />
+      case 'octahedron':
+        return <octahedronGeometry args={[1, 0]} />
+      default:
+        return <boxGeometry args={[1.5, 1.5, 1.5]} />
+    }
+  }
+
   return (
     <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.5}>
-      <primitive ref={modelRef} object={scene} scale={1.5} />
+      <mesh ref={modelRef} scale={1.5}>
+        {getGeometry()}
+        <meshStandardMaterial
+          color={color}
+          metalness={0.7}
+          roughness={0.2}
+          envMapIntensity={1}
+        />
+      </mesh>
     </Float>
   )
 }
@@ -41,7 +62,8 @@ const featuredProjects = [
     image: "/placeholder.svg?height=600&width=800",
     category: "3D Experience",
     link: "/projects/immersive-3d-product-configurator",
-    modelPath: "/assets/3d/duck.glb",
+    geometry: "dodecahedron",
+    color: "#8b5cf6",
     gradient: "from-purple-500 to-pink-500",
   },
   {
@@ -51,7 +73,8 @@ const featuredProjects = [
     image: "/placeholder.svg?height=600&width=800",
     category: "Web Application",
     link: "/projects/ai-ecommerce-platform",
-    modelPath: "/assets/3d/duck.glb",
+    geometry: "icosahedron",
+    color: "#06b6d4",
     gradient: "from-blue-500 to-cyan-500",
   },
   {
@@ -61,7 +84,8 @@ const featuredProjects = [
     image: "/placeholder.svg?height=600&width=800",
     category: "Data Visualization",
     link: "/projects/interactive-data-viz",
-    modelPath: "/assets/3d/duck.glb",
+    geometry: "octahedron",
+    color: "#10b981",
     gradient: "from-green-500 to-emerald-500",
   },
 ]
@@ -154,7 +178,7 @@ export default function FeaturedProjects() {
                     <Environment preset="city" />
                     <ambientLight intensity={0.5} />
                     <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
-                    <ProjectModel modelPath={project.modelPath} />
+                    <ProjectModel geometry={project.geometry} color={project.color} />
                     <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={1} />
                   </Canvas>
                 </Suspense>
