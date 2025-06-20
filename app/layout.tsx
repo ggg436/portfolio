@@ -25,7 +25,6 @@ export const metadata = {
     description: "Explore cutting-edge web development and 3D experiences",
     type: "website",
   },
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
